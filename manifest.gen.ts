@@ -97,17 +97,21 @@ const manifest = {
     "deco-sites/brown-deco-camp/sections/Images/ShoppableBanner.tsx": $$$$$$28,
     "deco-sites/brown-deco-camp/sections/Links/LinkTree.tsx": $$$$$$29,
     "deco-sites/brown-deco-camp/sections/Links/Shortcuts.tsx": $$$$$$30,
-    "deco-sites/brown-deco-camp/sections/Miscellaneous/CampaignTimer.tsx": $$$$$$31,
-    "deco-sites/brown-deco-camp/sections/Miscellaneous/CookieConsent.tsx": $$$$$$32,
+    "deco-sites/brown-deco-camp/sections/Miscellaneous/CampaignTimer.tsx":
+      $$$$$$31,
+    "deco-sites/brown-deco-camp/sections/Miscellaneous/CookieConsent.tsx":
+      $$$$$$32,
     "deco-sites/brown-deco-camp/sections/Miscellaneous/Slide.tsx": $$$$$$33,
     "deco-sites/brown-deco-camp/sections/Newsletter/Newsletter.tsx": $$$$$$34,
     "deco-sites/brown-deco-camp/sections/Product/ImageGalleryFrontBack.tsx":
       $$$$$$35,
     "deco-sites/brown-deco-camp/sections/Product/NotFound.tsx": $$$$$$36,
-    "deco-sites/brown-deco-camp/sections/Product/NotFoundChallenge.tsx": $$$$$$37,
+    "deco-sites/brown-deco-camp/sections/Product/NotFoundChallenge.tsx":
+      $$$$$$37,
     "deco-sites/brown-deco-camp/sections/Product/ProductDetails.tsx": $$$$$$38,
     "deco-sites/brown-deco-camp/sections/Product/ProductShelf.tsx": $$$$$$39,
-    "deco-sites/brown-deco-camp/sections/Product/ProductShelfTabbed.tsx": $$$$$$40,
+    "deco-sites/brown-deco-camp/sections/Product/ProductShelfTabbed.tsx":
+      $$$$$$40,
     "deco-sites/brown-deco-camp/sections/Product/SearchResult.tsx": $$$$$$41,
     "deco-sites/brown-deco-camp/sections/Product/ShelfWithImage.tsx": $$$$$$42,
     "deco-sites/brown-deco-camp/sections/Product/Wishlist.tsx": $$$$$$43,
