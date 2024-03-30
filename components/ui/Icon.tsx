@@ -46,7 +46,10 @@ export type AvailableIcons =
   | "AlertSuccess"
   | "AlertWarning"
   | "AlertError"
-  | "share";
+  | "share"
+  | "MoodSmile"
+  | "MoodCheck"
+  | "Friends";
 
 interface Props extends JSX.SVGAttributes<SVGSVGElement> {
   /**
@@ -58,16 +61,9 @@ interface Props extends JSX.SVGAttributes<SVGSVGElement> {
   size?: number;
 }
 
-function Icon(
-  { id, strokeWidth = 16, size, width, height, ...otherProps }: Props,
-) {
+function Icon({ id, strokeWidth = 16, size, width, height, ...otherProps }: Props) {
   return (
-    <svg
-      {...otherProps}
-      width={width ?? size}
-      height={height ?? size}
-      strokeWidth={strokeWidth}
-    >
+    <svg {...otherProps} width={width ?? size} height={height ?? size} strokeWidth={strokeWidth}>
       <use href={asset(`/sprites.svg#${id}`)} />
     </svg>
   );
