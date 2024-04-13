@@ -69,7 +69,7 @@ function ProductShelf({
       <div
         id={id}
         class={clx(
-          "grid",
+          "grid bg-neutral-800 p-5 rounded-lg",
           layout?.showArrows && "grid-cols-[48px_1fr_48px]",
           "px-0 md:px-5 container",
         )}
@@ -80,7 +80,7 @@ function ProductShelf({
               index={index}
               class={clx(
                 "carousel-item",
-                slideDesktop[layout?.numberOfSliders?.desktop ?? 3],
+                slideDesktop[layout?.numberOfSliders?.desktop ?? 4],
                 slideMobile[layout?.numberOfSliders?.mobile ?? 1],
               )}
             >

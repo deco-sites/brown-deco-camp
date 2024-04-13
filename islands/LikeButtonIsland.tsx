@@ -3,6 +3,8 @@ import Icon from "$components/ui/Icon.tsx";
 import { invoke } from "deco-sites/brown-deco-camp/runtime.ts";
 import { total } from "$sdk/useTotalLikes.ts";
 import { useEffect } from "preact/hooks";
+import { SendEventOnClick } from "deco-sites/brown-deco-camp/components/Analytics.tsx";
+import { useId } from "deco-sites/brown-deco-camp/sdk/useId.ts";
 
 export interface LikeButtonIslandProps {
   productID: string;
@@ -11,11 +13,14 @@ export interface LikeButtonIslandProps {
 function LikeButtonIsland({ productID }: LikeButtonIslandProps) {
   const selected = useSignal(false);
   const quantity = useSignal(0);
+  const id = useId();
 
   useEffect(() => {
     const updateTotals = async () => {
       const totalLikes = await invoke["deco-sites/brown-deco-camp"].loaders.totalLikesLoader();
-      const totalLikesProduct = await invoke["deco-sites/brown-deco-camp"].loaders.totalLikesProductLoader({ productID });
+      const totalLikesProduct = await invoke["deco-sites/brown-deco-camp"].loaders.totalLikesProductLoader({
+        productID,
+      });
       total.value = totalLikes.total;
       quantity.value = totalLikesProduct.product;
     };
@@ -40,6 +45,7 @@ function LikeButtonIsland({ productID }: LikeButtonIslandProps) {
 
   return (
     <button
+      id={id}
       class="absolute left-4 sm:left-auto sm:right-4 top-4 flex items-center justify-center gap-1 p-1 sm:p-2 rounded bg-neutral sm:bg-white min-w-14"
       onClick={(e) => handleToggleLike(e)}
     >
@@ -51,6 +57,18 @@ function LikeButtonIsland({ productID }: LikeButtonIslandProps) {
       <span class={`min-w-4 text-center text-xs font-thin ${!selected.value ? "text-gray-500" : "text-secondary"}`}>
         {quantity.value}
       </span>
+
+      <SendEventOnClick
+        id={id}
+        event={{
+          name: "post_score",
+          params: {
+            score: quantity.value + 1,
+            level: 5,
+            character: String(productID),
+          },
+        }}
+      />
     </button>
   );
 }

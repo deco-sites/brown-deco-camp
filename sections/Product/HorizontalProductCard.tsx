@@ -1,77 +1,177 @@
-import type { Product } from "apps/commerce/types.ts";
-import { HorizontalProductCard } from "$components/product/HorizontalProductCard.tsx";
-import { asset } from "$fresh/runtime.ts";
-import { clx } from "deco-sites/brown-deco-camp/sdk/clx.ts";
+import { mapProductToAnalyticsItem } from "apps/commerce/utils/productToAnalyticsItem.ts";
+import Image from "apps/website/components/Image.tsx";
+import { ProductCardFlagProps } from "deco-sites/brown-deco-camp/flags/multivariate/productCardFlag.ts";
+import AddToCartButtonVTEX from "deco-sites/brown-deco-camp/islands/AddToCartButton/vtex.tsx";
+import LikeButtonIsland from "deco-sites/brown-deco-camp/islands/LikeButtonIsland.tsx";
+import { useOffer } from "deco-sites/brown-deco-camp/sdk/useOffer.ts";
+import { formatCurrency } from "deco-sites/brown-deco-camp/utils/formatCurrency.ts";
 
-export type maxWidth =
-  | "max-w-xl"
-  | "max-w-2xl"
-  | "max-w-3xl"
-  | "max-w-4xl"
-  | "max-w-5xl"
-  | "max-w-6xl"
-  | "max-w-7xl"
-  | "max-w-full";
-
-export interface HorizontalProductSectionProps {
-  products: Product[] | null;
-  animation?: boolean;
-  larguraMax?: maxWidth;
+export interface HorizontalProductCardProps {
+  /**
+   * @title Produtos
+   */
+  products: ProductCardFlagProps;
+  animateImage: boolean;
 }
 
-export function loader(props: HorizontalProductSectionProps, _req: Request) {
-  return props;
-}
-
-const HorizontalProductSection = ({ products, animation, larguraMax }: HorizontalProductSectionProps) => {
-  if (!products?.length) return null;
+export function ErrorFallback({ error }: { error?: Error }) {
+  console.log("error HorizontalProductCard: ", error);
 
   return (
-    <div class={clx("flex items-center justify-center gap-x-4 flex-wrap my-4 w-full mx-auto", larguraMax)}>
-      {products.map((product) => (
-        <HorizontalProductCard animation={animation} product={product} />
-      ))}
+    <div class="w-full max-w-5xl px-4 mx-auto py-8 lg:py-10 flex flex-col gap-8 lg:gap-10">
+      <a
+        href="/culturas"
+        aria-label={`Ver página Culturas`}
+        class="flex gap-2 sm:gap-4 md:gap-8 p-2 sm:p-4 md:p-6 rounded-xl bg-neutral-content"
+      >
+        <div class={`w-40 md:w-48 h-40 md:h-48 flex justify-center items-center overflow-hidden rounded`}>
+          <img
+            loading="lazy"
+            width="200"
+            height="279"
+            src="/image/banner-fallback.png"
+            alt="Imagem de cerâmica"
+            class="duration-300 hover:scale-110"
+          />
+        </div>
+
+        <div class="flex flex-col gap-3 sm:gap-4 md:gap-8 flex-1 ">
+          <h2 class="line-clamp-2 md:line-clamp-3 text-base md:text-lg text-base-content uppercase font-normal">
+            Cerâmica indígena
+          </h2>
+          <span class="line-clamp-1 md:line-clamp-3 text-base-content text-xs md:text-sm font-light">
+            Venha ver a arte da cultura indígena brasileiras, que traz lindas peças de cerâmica para alegrar sua casa
+          </span>
+          <button class="btn btn-block max-w-48 mt-auto">Para saber mais</button>
+        </div>
+      </a>
     </div>
   );
-};
+}
 
 export function LoadingFallback() {
-  // Renderer spinners, skeletons and other placeholder
+  const skeleton = {
+    background: "linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%)",
+    backgroundSize: "1000px 100%",
+  };
+
   return (
-    <div class="container flex justify-center py-4">
-      <div class="flex max-sm:flex-col gap-2">
-        <div class="skeleton h-44 w-44 shrink-0 rounded-none"></div>
-        <div class="flex flex-col w-[213px]">
-          <div class="skeleton h-6 mb-2 rounded-none"></div>
-          <div class="skeleton h-4 mb-2 rounded-none"></div>
-          <div class="skeleton h-4 rounded-none mb-2"></div>
-          <div class="skeleton h-6 mb-5 rounded-none"></div>
-          <div class="skeleton h-12 w-full rounded"></div>
+    <div class="w-full max-w-5xl px-4 mx-auto py-8 lg:py-10 flex flex-col gap-8 lg:gap-10">
+      <div class="flex gap-2 sm:gap-4 md:gap-8 p-2 sm:p-4 md:p-6 rounded-xl bg-neutral-content">
+        <div style={skeleton} class="animate-pulse bg-animation w-40 md:w-48 h-40 md:h-48 rounded bg-gray-300" />
+
+        <div class="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-8 flex-1 ">
+          <div class="flex flex-col gap-1 md:gap-8 flex-1">
+            <h2 style={skeleton} class="h-12 md:h-7 w-full animate-pulse rounded" />
+            <span style={skeleton} class="h-4 md:h-5 w-full animate-pulse rounded" />
+          </div>
+
+          <div class="flex flex-col gap-1 md:gap-8 md:pl-8 md:border-l md:border-solid md:border-gray-300">
+            <div class="flex flex-col gap-1">
+              <span style={skeleton} class="h-5 w-44 animate-pulse rounded hidden md:inline-flex" />
+              <span style={skeleton} class="h-5 max-w-48 w-full md:max-w-none md:w-44 animate-pulse rounded" />
+            </div>
+
+            <div class="flex flex-col gap-2 mt-auto max-w-48 md:max-w-none">
+              <span style={skeleton} class="h-12 max-w-48 w-full md:max-w-none md:w-44 animate-pulse rounded" />
+              <span style={skeleton} class="h-12 w-44 animate-pulse rounded hidden md:inline-flex" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export function ErrorFallback({ error: _error }: { error?: Error }) {
+export default function HorizontalProductCard({ animateImage, products }: HorizontalProductCardProps) {
+  if (!products?.length) {
+    return ErrorFallback({ error: new Error("Sem produtos para renderizar") });
+  }
+
   return (
-    <div class="flex flex-col mx-auto max-w-96">
-      <img
-        class={"mb-2"}
-        src={asset("https://cdn.folhape.com.br/img/pc/1100/1/dn_arquivo/2021/03/juliette-fiuk-cuscuz.jpg")}
-        alt={"Error"}
-        height={400}
-        width={400}
-      />
-      <p class={"mb-2"}>{_error?.message}</p>
-      <a
-        href="/cultura"
-        class="btn btn-block bg-transparent hover:bg-primary border border-white hover:border-transparent"
-      >
-        Para Saber mais
-      </a>
+    <div class="w-full max-w-5xl px-4 mx-auto py-8 lg:py-10 flex flex-col gap-8 lg:gap-10">
+      {products.map((product: any) => {
+        const productID = product.productID;
+        const url = product.url;
+        const image = product.image?.[0];
+        const name = product.name;
+        const description = product.description;
+        const { listPrice, price } = useOffer(product.offers);
+
+        if (!productID) {
+          return ErrorFallback({ error: new Error("Produto sem ID") });
+        }
+        if (!url) return ErrorFallback({ error: new Error("Produto sem URL") });
+        if (!name) {
+          return ErrorFallback({ error: new Error("Produto sem nome") });
+        }
+
+        const eventItem = mapProductToAnalyticsItem({
+          product,
+          breadcrumbList: undefined,
+          price,
+          listPrice,
+        });
+
+        return (
+          <a
+            key={`horizontal-product-card-${productID}`}
+            href={url}
+            aria-label={`Ver produto ${name}`}
+            class="flex gap-2 sm:gap-4 md:gap-8 p-2 sm:p-4 md:p-6 rounded-xl bg-neutral-800 relative"
+          >
+            {!!image && (
+              <div class={`w-40 md:w-48 h-40 md:h-48 flex justify-center items-center overflow-hidden rounded`}>
+                <Image
+                  width={200}
+                  height={279}
+                  sizes="(max-width: 640px) 100vw, 30vw"
+                  src={image.url!}
+                  alt={image.alternateName}
+                  decoding="async"
+                  loading="lazy"
+                  class={`duration-300 ${animateImage ? "hover:scale-110" : ""}`}
+                />
+              </div>
+            )}
+
+            {!image && <div class="w-40 md:w-48 h-40 md:h-48 rounded bg-neutral-50" />}
+
+            <div class="flex flex-col md:flex-row gap-3 sm:gap-4 md:gap-8 flex-1 ">
+              <div class="flex flex-col gap-1 md:gap-8 flex-1 sm:pr-20 md:pr-0">
+                <h2 class="line-clamp-2 md:line-clamp-3 text-base md:text-lg text-base-content uppercase font-normal">
+                  {name}
+                </h2>
+                {!!description && (
+                  <span class="line-clamp-1 md:line-clamp-3 text-base-content text-xs md:text-sm font-light">
+                    {description}
+                  </span>
+                )}
+              </div>
+
+              <div class="flex flex-col gap-1 md:gap-8 md:pl-8 md:border-l md:border-solid md:border-gray-300">
+                <div class="flex flex-col gap-1">
+                  {!!listPrice && (
+                    <span class="line-through text-sm hidden md:inline-flex">{formatCurrency(listPrice)}</span>
+                  )}
+                  {!!price && <span class="text-sm text-primary">{formatCurrency(price)}</span>}
+                </div>
+
+                {!price && <span class="text-sm">Indisponível</span>}
+
+                <div class="flex flex-col gap-2 mt-auto max-w-48 md:max-w-none">
+                  {!!price && (
+                    <AddToCartButtonVTEX eventParams={{ items: [eventItem] }} productID={productID} seller={"1"} />
+                  )}
+                  <button class="btn btn-block hidden md:inline-flex">Ver produto</button>
+                </div>
+              </div>
+            </div>
+
+            <LikeButtonIsland productID={productID} />
+          </a>
+        );
+      })}
     </div>
   );
 }
-
-export default HorizontalProductSection;
